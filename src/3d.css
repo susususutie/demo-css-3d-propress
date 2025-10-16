@@ -1,0 +1,96 @@
+* {
+  box-sizing: border-box;
+}
+
+/* 立方体容器 */
+.cube-container {
+  /* 可通过尺寸、旋转角度 计算投影尺寸，最终算出旋转后的安全间距 */
+  margin: calc(10px * var(--s)) calc(10px * var(--s));
+  perspective: 100000px;
+
+  --s: 4;
+  --w: calc(360px * var(--s));
+  --h: calc(26px * var(--s));
+  --d: calc(26px * var(--s));
+
+  width: var(--w);
+  height: var(--h);
+
+  /* perspective-origin: 50% 50% */
+}
+
+.cube {
+  width: var(--w);
+  height: var(--h);
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 1s;
+  transform: rotateX(0deg) rotateY(0deg);
+  animation: rotate-x 5s infinite linear;
+  /* animation: rotate-y 5s infinite linear; */
+
+  --front-x: 10deg;
+  --front-y: 10deg;
+}
+@keyframes rotate-x {
+  0% {
+    transform: rotateX(0deg);
+  }
+  100% {
+    transform: rotateX(360deg);
+  }
+}
+@keyframes rotate-y {
+  0% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(360deg);
+  }
+}
+
+.cube-face {
+  position: absolute;
+  border: 1px solid #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  background-color: #8cebff44;
+}
+
+/* 各个面的 3D 位置 */
+.front {
+  width: var(--w);
+  height: var(--h);
+  transform: rotateX(var(--front-x)) rotateY(var(--front-y)) translateZ(calc(var(--d) / 2));
+}
+.back {
+  width: var(--w);
+  height: var(--h);
+  transform: rotateX(var(--front-x)) rotateY(calc(var(--front-y) + 180deg)) translateZ(calc(var(--d) / 2));
+}
+.left {
+  left: calc(calc(var(--w) - var(--d)) / 2);
+  width: var(--d);
+  height: var(--h);
+  transform: rotateX(var(--front-x)) rotateY(calc(var(--front-y) - 90deg)) translateZ(calc(var(--w) / 2));
+}
+.right {
+  left: calc(calc(var(--w) - var(--d)) / 2);
+  width: var(--d);
+  height: var(--h);
+  transform: rotateX(var(--front-x)) rotateY(calc(var(--front-y) + 90deg)) translateZ(calc(var(--w) / 2));
+}
+.top {
+  top: calc(calc(var(--h) - var(--d)) / 2);
+  width: var(--w);
+  height: var(--d);
+  transform: rotateX(calc(var(--front-x) + 90deg)) rotateZ(calc(0deg - var(--front-y))) translateZ(calc(var(--h) / 2));
+}
+.bottom {
+  top: calc(calc(var(--h) - var(--d)) / 2);
+  width: var(--w);
+  height: var(--d);
+  transform: rotateX(calc(var(--front-x) - 90deg)) rotateZ(var(--front-y)) translateZ(calc(var(--h) / 2));
+}
